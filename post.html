@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'poppins', sans-serif;
+            background: url(https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+
+        }
+
+        .navbar {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            background-color: blue;
+            color: white;
+            padding-left: 20px;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .file-label {
+            display: inline-block;
+            width: 580px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #file-upload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 570px;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        #textinp {
+            height: auto;
+            min-height: 100px;
+            margin: 10px;
+
+            border-radius: 10px;
+            outline: none;
+            border: 0;
+            text-rendering: auto;
+            font-family: 'poppins', sans-serif;
+            padding: 10px 15px;
+            text-wrap: nowrap;
+            font-size: 18px;
+            resize: none;
+
+        }
+
+        .custom-text-input {
+            display: inline-block;
+            position: relative;
+            margin: 10px;
+        }
+
+        #text-input {
+            width: 600px;
+            /* Constant width */
+            font-family: 'poppins', sans-serif;
+            min-height: 50px;
+            /* Initial height */
+            padding: 10px;
+            border: 0px solid #007bff;
+            border-radius: 5px;
+            resize: none;
+            /* Disable resizing */
+            font-size: 14px;
+            transition: min-height 0.2s ease;
+            /* Smooth transition for height change */
+            overflow: hidden;
+            /* Disable scrolling */
+        }
+
+        form {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            left: 25%;
+            top: 20%;
+        }
+
+        form p {
+            margin: 10px 0;
+        }
+
+        #submit {
+            text-align: center;
+            width: 620px;
+            margin: 20px 10px;
+            border-radius: 22px;
+            outline: none;
+            border: 0 solid #000;
+            background-color: blueviolet;
+            color: white;
+            font-family: 'poppins', sans-serif;
+            font-size: 14px;
+            padding: 10px 20px;
+            font-weight: 400;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">Upload a post</div>
+    <form action="" id="form1" class="form1">
+        <div class="custom-text-input">
+            <p>Type something you want to share : </p>
+            <textarea id="text-input" required placeholder="Enter your text here..."></textarea>
+        </div>
+
+        <div class="custom-file-upload">
+            <p>Add an image : </p>
+
+            <label for="file-upload" class="file-label">Choose an image</label>
+            <input type="file" id="file-upload" accept="image/*">
+        </div>
+
+        <button id="submit" type="submit">Upload</button>
+    </form>
+    <img src="" alt="" id="imgg">
+    <script>
+
+
+ 
+        document.getElementById('form1').addEventListener('submit', (event) => {
+            event.preventDefault()
+            let caption = document.getElementById('text-input').value.trim()
+            let img = document.getElementById('file-upload')
+            if (img.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const dataURL = e.target.result;
+                    localStorage.setItem('imgStored', dataURL);
+                    let now = new Date()
+                    window.postMessage('post-uploaded')
+                    let dateandtime = now.toDateString()
+                    localStorage.setItem('postdata', JSON.stringify({ caption, dateandtime }))
+                    window.location.href = 'index.html'
+                };
+                reader.readAsDataURL(img.files[0]);
+            } else {
+                alert('No file selected');
+            }
+        })
+
+       
+    </script>
+</body>
+
+</html>
